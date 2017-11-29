@@ -62,7 +62,7 @@ class App extends Component {
             tenga en cuenta esto si usa datos (2 clicks es casi 1 mega)
         </p>
         <p className="App-intro">
-          Bienvenidos a la Version 0.1.5
+          Bienvenidos a la Version 0.1.6
         </p>
       </div>
     );
@@ -71,6 +71,10 @@ class App extends Component {
     this.setState({
       loading:true
     });
+    ReactGA.event({
+      category:'Fetch',
+      action:'Click a actualizar'
+    })
     let getDate = () => fetch("https://api.tse.hn/prod/General/Snapshot/0",{
       method:"GET"
     }).then((response) => response.json());
@@ -109,9 +113,6 @@ class App extends Component {
       + "MER No Procesadas:\t" + MERNoProc + "\t" + porcentajeNoProc + "%\n"
       + "Ultima Actualización: " + lastUpdate + "\n"
       ;*/
-      ReactGA.event({
-        action:'Click a actualizar'
-      })
       this.setState({
         loading:false,
         votos:{
