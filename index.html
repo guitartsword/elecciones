@@ -1,1 +1,66 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name="theme-color" content="#000000"><link rel="manifest" href="/manifest.json"><link rel="shortcut icon" href="/favicon.ico"><title>React App</title><link href="/static/css/main.c7791c0e.css" rel="stylesheet"></head><body><noscript>You need to enable JavaScript to run this app.</noscript><div id="root"></div><script type="text/javascript" src="/static/js/main.bcd0f8df.js"></script></body></html>
+<!doctype html>
+<html>
+<head>
+  <title>Nasralla | JOH | Diferencia</title>
+</head>
+<body>
+<h1>V 0.0.8</h1>
+<p>-Isaias Valle</p>
+<pre>
+    <font id="show-data" size="30"></font>
+</pre>
+<button class="button" onclick="loadData()">Reload</button>
+<script type="text/javascript">
+var getDate = () => fetch("https://api.tse.hn/prod/General/Snapshot/0",{
+    method:"GET"
+}).then((response) => response.json());
+var getData = () =>
+fetch ("https://api.tse.hn/prod/ResultadoPresidente/Nacional/0",{
+    method:"GET"
+}).then((response) => response.json());
+var loadData = () => {
+    document.getElementById("show-data").innerText = "Loading.......";
+    Promise.all([getDate(), getData()]).then(([date, data]) => {
+        let votosNacional = 0, votosAlianza = 0, totalVotos = 0;
+        let lastUpdate = "";
+        lastUpdate = date.FecLocalLarga;
+        let lista = data.Lista;
+        lista.forEach((data)=>{
+            if(data.Partido === "PARTIDO NACIONAL DE HONDURAS")
+                votosNacional += data.Votos;
+            if(data.Partido === "LIBRE-PINU")
+                votosAlianza += data.Votos;
+            totalVotos += data.Votos;
+        });
+        let diferencia = votosAlianza - votosNacional;
+        const porcentajeAlianza = parseFloat(votosAlianza/totalVotos*100).toFixed(4);
+        const porcentajeNacional = parseFloat(votosNacional/totalVotos*100).toFixed(4)
+        const porcentajeDiferencia = parseFloat(porcentajeAlianza - porcentajeNacional).toFixed(4);
+        let imprimir = "\nNasralla:\t" + votosAlianza + "\t" + porcentajeAlianza + "%\n" +
+        "JOH:\t\t" + votosNacional+ "\t" + porcentajeNacional + "%\n" +
+        "Diferencia:\t"+ diferencia + "\t"+ porcentajeDiferencia+"%\n" +
+        "Total de Votos:\t" + totalVotos +"\n" +
+        lastUpdate;
+        document.getElementById("show-data").innerText = imprimir;
+    }, (err) => {
+        document.getElementById("show-data").innerText = err;
+    });
+}
+loadData();
+</script>
+
+
+</body>
+<style>
+    .button {
+        background-color: #4CAF50; /* Green */
+        border: none;
+        color: white;
+        padding: 15px 32px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+    }
+</style>
+</html>
