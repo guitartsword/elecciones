@@ -4,7 +4,7 @@
   <title>Nasralla | JOH | Diferencia</title>
 </head>
 <body>
-<h1>V 0.0.7</h1>
+<h1>V 0.0.8</h1>
 <p>-Isaias Valle</p>
 <pre>
     <font id="show-data" size="30"></font>
@@ -33,9 +33,9 @@ var loadData = () => {
             totalVotos += data.Votos;
         });
         let diferencia = votosAlianza - votosNacional;
-        const porcentajeAlianza = votosAlianza/totalVotos*100;
-        const porcentajeNacional = votosNacional/totalVotos*100;
-        const porcentajeDiferencia = porcentajeAlianza - porcentajeNacional;
+        const porcentajeAlianza = parseFloat(votosAlianza/totalVotos*100).toFixed(4);
+        const porcentajeNacional = parseFloat(votosNacional/totalVotos*100).toFixed(4)
+        const porcentajeDiferencia = parseFloat(porcentajeAlianza - porcentajeNacional).toFixed(4);
         let imprimir = "\nNasralla:\t" + votosAlianza + "\t" + porcentajeAlianza + "%\n" +
         "JOH:\t\t" + votosNacional+ "\t" + porcentajeNacional + "%\n" +
         "Diferencia:\t"+ diferencia + "\t"+ porcentajeDiferencia+"%\n" +
